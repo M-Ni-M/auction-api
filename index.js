@@ -4,6 +4,7 @@ import cors from "cors";
 import { initSocketIO } from "./config/socketConfig.js";
 import {createServer} from 'http'
 import itemRouter from "./routes/auctionRoutes.js";
+import userRouter from "./routes/userRoutes.js";
 
 //Database connection
 async function connectionDatabase() {
@@ -40,6 +41,7 @@ const httpServer = createServer(myApp);
 
 // Routes
 myApp.use('/api/v1', itemRouter)
+myApp.use('/api/v1', userRouter)
 
 // Initialize socket.io with the HTTP server
 const io = initSocketIO(httpServer);

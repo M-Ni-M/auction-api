@@ -1,4 +1,5 @@
 import { AuctionModel } from "../models/auction.js";
+import { UserModel } from "../models/users.js";
 import { auctionItemValidator } from "../validators/auctionValidators.js";
 
 //Add an item for auctioning
@@ -18,7 +19,9 @@ export const addItemToAuction = async (req, res, next) => {
     }
 
     const addItem = await AuctionModel.create({
-      ...value
+      ...value,
+        userId: req.auth.id,
+      
     });
     res.status(201).json({ message: "Item added for Auction", item: addItem });
   } catch (error) {

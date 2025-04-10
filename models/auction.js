@@ -35,4 +35,4 @@ const auctionSchema = new Schema(
 
 auctionSchema.plugin(normalize);
 
-export const AuctionModel = model("Auction", auctionSchema);
+export const AuctionModel = model('Auction', auctionSchema);
