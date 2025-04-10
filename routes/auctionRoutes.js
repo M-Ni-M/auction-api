@@ -7,12 +7,14 @@ import {
   getAuctionItem,
   updateItem,
 } from "../controllers/auctionController.js";
+import { auth } from "../middlewares/auth.js";
+import { auctionOwner } from "../middlewares/authz.js";
 
 const itemRouter = Router();
 
 itemRouter.post(
   "/add-item",
-  auctionItemImage.single("image"),
+  auctionItemImage.single("image"),auth,
   addItemToAuction
 );
 
@@ -22,11 +24,11 @@ itemRouter.get("/item/:id", getAuctionItem);
 
 itemRouter.patch(
   "/update-item/:id",
-  auctionItemImage.single("image"),
+  auctionItemImage.single("image"), auth, auctionOwner,
   updateItem
 );
 
-itemRouter.delete("/delete-item/:id", deleteItem);
+itemRouter.delete("/delete-item/:id", auth, auctionOwner, deleteItem);
 
 
 export default itemRouter;
