@@ -1,6 +1,6 @@
 import { expressjwt } from 'express-jwt';
 
-export const auth = (req, res, next) => {
+const authMiddleware = (req, res, next) => {
   expressjwt({
       secret: process.env.JWT_SECRET_KEY,
       algorithms: ['HS256'],
@@ -15,3 +15,4 @@ export const auth = (req, res, next) => {
   });
 };
 
+export default authMiddleware;

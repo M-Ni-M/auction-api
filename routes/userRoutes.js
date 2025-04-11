@@ -2,19 +2,23 @@ import { Router } from "express";
 import {
   registerUser,
   loginUser,
+  forgotPassword,
+  resetPassword,
   verifyEmail,
   generateToken,
   logout,
 } from "../controllers/userController.js";
 import passport from "passport";
-import auth from "../middlewares/auth.js";
+import authMiddleware from "../middlewares/auth.js";
 
 export const userRouter = Router();
 
 userRouter.post("/user/register", registerUser);
 userRouter.post("/user/verify-email", verifyEmail);
+userRouter.post("/forgot-password", forgotPassword);
+userRouter.post("/reset-password/:token", resetPassword);
 userRouter.post("/user/login", loginUser);
-userRouter.post("/user/logout", auth, logout);
+userRouter.post("/user/logout", authMiddleware, logout);
 
 userRouter.get(
   "/google",
