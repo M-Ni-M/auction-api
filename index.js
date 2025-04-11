@@ -8,6 +8,7 @@ import userRouter from "./routes/userRoutes.js";
 import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
+import "./config/passport-setup.js"
 
 //Database connection
 async function connectionDatabase() {
@@ -28,6 +29,26 @@ myApp.use(express.json());
 myApp.use(express.urlencoded({ extended: true }));
 myApp.use(cors());
 
+myApp.use(
+  session({
+    secret: process.env.JWT_SECRET_KEY || "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000
+    },
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI, 
+      ttl: 14 * 24 * 60 * 60
+     }),
+  })
+);
+
+myApp.use(passport.initialize());
+myApp.use(passport.session());
+
+
 // Basic Route for testing
 myApp.get("/", (req, res) => {
   res.status(200).json({
@@ -37,20 +58,6 @@ myApp.get("/", (req, res) => {
 });
 const port = process.env.PORT || 3333;
 
-myApp.use(
-  session({
-    secret: process.env.JWT_SECRET_KEY || "secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: false,
-    },
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-  })
-);
-
-myApp.use(passport.initialize());
-myApp.use(passport.session());
 
 //Create HTTP server using Express app
 const httpServer = createServer(myApp);

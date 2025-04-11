@@ -63,13 +63,11 @@ export const verifyEmail = async (req, res, next) => {
       expiresIn: "24h",
     });
 
-    return res
-      .status(200)
-      .json({
-        message: "Email Verified Successfully",
-        accessToken,
-        user: { id: user.id },
-      });
+    return res.status(200).json({
+      message: "Email Verified Successfully",
+      accessToken,
+      user: { id: user.id },
+    });
   } catch (error) {
     next(error);
   }
@@ -106,13 +104,11 @@ export const loginUser = async (req, res, next) => {
       expiresIn: "24h",
     });
     //return response
-    return res
-      .status(200)
-      .json({
-        message: "Login Successfull",
-        accessToken,
-        user: { id: user.id },
-      });
+    return res.status(200).json({
+      message: "Login Successfull",
+      accessToken,
+      user: { id: user.id },
+    });
   } catch (error) {
     next(error);
   }
@@ -124,4 +120,8 @@ export const logout = (req, res) => {
 
 export const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: "24h" });
+};
+
+const verifyToken = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET_KEY);
 };

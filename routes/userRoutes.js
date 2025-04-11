@@ -7,7 +7,7 @@ import {
   logout,
 } from "../controllers/userController.js";
 import passport from "passport";
-import { auth } from "../middlewares/auth.js";
+import auth from "../middlewares/auth.js";
 
 export const userRouter = Router();
 
@@ -19,14 +19,16 @@ userRouter.post("/user/logout", auth, logout);
 userRouter.get(
   "/google",
   passport.authenticate("google", {
-    scope: ["profile", "email"],
+    session: false,
+    accessType: "offline",
+    prompt: "consent",
   })
 );
 
 userRouter.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/user/login",
+    session: false,
   }),
   (req, res) => {
     const token = generateToken(req.user._id);

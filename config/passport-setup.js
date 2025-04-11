@@ -1,12 +1,12 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import { UserModel } from "../models/users";
+import { UserModel } from "../models/users.js";
 
 // Jwt strategy for API authentication
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secret: process.env.JWT_SECRET_KEY,
+  secretOrKey: process.env.JWT_SECRET_KEY,
 };
 
 passport.use(
@@ -28,7 +28,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_KEY,
-      callbackURL: "/auth/google/callback",
+      callbackURL: "/api/v1/google/callback",
       scope: ["profile", "email"],
     },
     async (accessToken, refreshToken, profile, done) => {
