@@ -6,7 +6,7 @@ import {
 } from "../validators/userValidator.js";
 import { UserModel } from "../models/users.js";
 import crypto from "crypto";
-import { sendVerificationEmail } from "../utils/mailer.js";
+import { sendVerificationEmail, sendForgotPasswordEmail } from "../utils/mailer.js";
 
 export const registerUser = async (req, res, next) => {
   try {
@@ -125,3 +125,63 @@ export const generateToken = (id) => {
 const verifyToken = (token) => {
   return jwt.verify(token, process.env.JWT_SECRET_KEY);
 };
+
+
+// FORGOT PASSWORD
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+    const expirationDate = Date.now() + 3600000; // 1 hour
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = expirationDate;
+    await user.save();
+
+    const resetLink = `http://localhost:3333/api/v1/reset-password/${token}`;
+
+
+    await sendForgotPasswordEmail(email, resetLink);
+
+
+    res.status(200).json({ message: 'Password reset link sent to your email.' });
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+}
+};
+
+export const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+      const user = await UserModel.findOne({
+          resetPasswordToken: token,
+          resetPasswordExpires: { $gt: Date.now() },
+      });
+
+      if (!user) {
+          return res.status(400).json({ message: 'Invalid or expired token' });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      await user.save();
+
+      res.status(200).json({ message: 'Password has been reset successfully.' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
