@@ -1,25 +1,30 @@
 import { Schema, model } from "mongoose";
 import normalize from "normalize-mongoose";
+import { Types } from "mongoose";
 
 const userSchema = new Schema(
   {
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: {
-      type: String, required: function () {
-        return this.strategy !== 'google';
-      }
+      type: String,
+      required: function () {
+        return this.strategy !== "google";
+      },
     },
     googleId: {
-      type: String
+      type: String,
     },
-    verificationCode: { type: String, required: function () {
-      return this.strategy !== 'google';
-    } },
+    verificationCode: {
+      type: String,
+      required: function () {
+        return this.strategy !== "google";
+      },
+    },
     verified: { type: Boolean, default: false },
     strategy: {
       type: String,
-      default: 'local'
+      default: "local",
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
@@ -29,5 +34,11 @@ const userSchema = new Schema(
   }
 );
 
+
+
+
+
+
 userSchema.plugin(normalize);
+
 export const UserModel = model("User", userSchema);

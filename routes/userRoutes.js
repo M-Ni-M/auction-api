@@ -7,6 +7,8 @@ import {
   verifyEmail,
   generateToken,
   logout,
+  getUser,
+  getUsers,
 } from "../controllers/userController.js";
 import passport from "passport";
 import authMiddleware from "../middlewares/auth.js";
@@ -19,7 +21,8 @@ userRouter.post("/forgot-password", forgotPassword);
 userRouter.post("/reset-password/:token", resetPassword);
 userRouter.post("/user/login", loginUser);
 userRouter.post("/user/logout", authMiddleware, logout);
-
+userRouter.get("/user/:id", getUser);
+userRouter.get("/users", getUsers)
 userRouter.get(
   "/google",
   passport.authenticate("google", {

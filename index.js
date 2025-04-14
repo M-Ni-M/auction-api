@@ -9,6 +9,7 @@ import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
 import "./config/passport-setup.js"
+import { bidRouter } from "./routes/bidRoutes.js";
 
 
 //Database connection
@@ -66,6 +67,7 @@ const httpServer = createServer(myApp);
 // Routes
 myApp.use("/api/v1", itemRouter);
 myApp.use("/api/v1", userRouter);
+myApp.use("/api/v1", bidRouter)
 
 // Initialize socket.io with the HTTP server
 const io = initSocketIO(httpServer);

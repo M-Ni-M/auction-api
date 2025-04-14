@@ -22,9 +22,11 @@ export const registerUser = async (req, res, next) => {
     if (user) {
       return res.status(409).json("user already exists");
     }
+    
     //hash plaintext password
     const hashedPassword = bcrypt.hashSync(value.password, 10);
     const verificationCode = crypto.randomBytes(3).toString("hex");
+
     //create user record in database
     const result = await UserModel.create({
       ...value,
@@ -144,7 +146,7 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = expirationDate;
     await user.save();
 
-    const resetLink = `http://localhost:3333/api/v1/reset-password/${token}`;
+    const resetLink = `https://auction-api-6aps.onrender.com/api/v1/reset-password/${token}`;
 
 
     await sendForgotPasswordEmail(email, resetLink);
@@ -184,4 +186,34 @@ export const resetPassword = async (req, res) => {
   }
 };
 
+export const getUsers = async (req, res, next) => {
+  try {
+    const { filter = "{}", sort = "{}" } = req.query;
 
+    const parsedFilter = JSON.parse(filter);
+    const parsedSort = JSON.parse(sort);
+
+    const users = await UserModel.find(parsedFilter)
+      .sort(parsedSort)
+      .exec();
+
+    res.status(200).json({ users, totalUsers: users.length });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await UserModel.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User cannot be found." });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
