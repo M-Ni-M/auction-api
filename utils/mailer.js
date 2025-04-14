@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendForgotPasswordEmail = async (to, resetLink) => {
     const mailOptions = {
-        from: `"Finalisima" <${process.env.USER_EMAIL}>`,
+        from: `"Finalixima" <${process.env.USER_EMAIL}>`,
         to: to,
         subject: "Password Reset Request",
         html: `<!DOCTYPE html>
@@ -91,7 +91,7 @@ export const sendForgotPasswordEmail = async (to, resetLink) => {
 
 export const sendVerificationEmail = async (to, verificationCode, username) => {
     const mailOptions = {
-        from: `"Finalisima" <${process.env.USER_EMAIL}>`,
+        from: `"Finalixima" <${process.env.USER_EMAIL}>`,
         to: to,
         subject: "Email Verification",
         html: `<!DOCTYPE html>
@@ -194,7 +194,7 @@ export const sendVerificationEmail = async (to, verificationCode, username) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log("Verificatio email sent to:", to);
+        console.log("Verification email sent to:", to);
     } catch (error) {
         console.error("Error sending verification email: ", error);
         throw new Error("Could not send verification email")

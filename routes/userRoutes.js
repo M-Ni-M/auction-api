@@ -37,6 +37,14 @@ userRouter.get(
   (req, res) => {
     const token = generateToken(req.user._id);
 
+    // Set JWT in http-only cookie
+    res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 24 * 60 * 60 * 1000
+    })
+
     res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`);
   }
 );
