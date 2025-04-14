@@ -33,21 +33,38 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const { email } = profile.emails[0];
-        const existingUser = await UserModel.findOne({ email });
+        if (!profile.emails?.length) {
+          return done(new Error("No email found in Google Profile"));
+        }
+        const { email } = profile.emails[0].value;
+        const existingUser = await UserModel.findOne({
+          $or: [{ googleId: profile.id }, { email: email }],
+        });
 
         if (existingUser) {
-          done(null, existingUser);
+          if (!existingUser.googleId) {
+            existingUser.googleId = profile.id;
+            await existingUser.save();
+          }
+          return done(null, existingUser);
         } else {
-          const newUser = new UserModel({
-            googleId: profile.id,
-            username: profile.displayName,
-            email: profile.emails[0].value,
-            verified: true,
-            strategy: "google",
-          });
-          await newUser.save();
-          done(null, newUser);
+          try {
+            const newUser = new UserModel({
+              googleId: profile.id,
+              username: profile.displayName,
+              email: profile.emails[0].value,
+              verified: true,
+              strategy: "google",
+            });
+            await newUser.save();
+            return done(null, newUser);
+          } catch (error) {
+            if (error.code === 11000) {
+              const existing = await UserModel.findOne({ email });
+              return done(null, existing);
+            }
+            throw error;
+          }
         }
       } catch (error) {
         done(error);
