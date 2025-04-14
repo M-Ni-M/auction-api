@@ -1,4 +1,6 @@
 import { AuctionModel } from '../models/auction.js';
+
+import BidModel from '../models/bids.js';
 import { Types } from 'mongoose';
 
 
@@ -43,5 +45,41 @@ export const auctionOwner = async (req, res, next) => {
     next();
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const bidOwner = async (req, res, next) => {
+  const bidId = req.params.id; 
+
+  if (!Types.ObjectId.isValid(bidId)) {
+      return res.status(400).json({
+          error: 'Invalid ID',
+          message: 'The provided bid ID is incomplete or invalid.',
+      });
+  }
+
+  try {
+      // Find the bid by ID
+      const bid = await BidModel.findById(bidId);
+
+      // Check if the bid exists
+      if (!bid) {
+          return res.status(404).json({ error: "Bid not found." });
+      }
+
+      // Check if the authenticated user is the owner
+      const bidOwnerId = bid.userId.toString();
+      const authenticatedUserId = req.auth.id;
+
+      if (bidOwnerId !== authenticatedUserId) {
+          return res.status(403).json({
+              error: "Unauthorized",
+              message: "You do not have permission to modify or delete this bid.",
+          });
+      }
+
+      next();
+  } catch (error) {
+      return res.status(500).json({ error: "Internal server error" });
   }
 };

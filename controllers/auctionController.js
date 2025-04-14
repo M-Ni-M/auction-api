@@ -1,5 +1,4 @@
 import { AuctionModel } from "../models/auction.js";
-import { UserModel } from "../models/users.js";
 import { auctionItemValidator } from "../validators/auctionValidators.js";
 
 //Add an item for auctioning
