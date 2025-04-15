@@ -195,6 +195,7 @@ export const getUsers = async (req, res, next) => {
 
     const users = await UserModel.find(parsedFilter)
       .sort(parsedSort)
+      .select({password: false, verificationCode: false})
       .exec();
 
     res.status(200).json({ users, totalUsers: users.length });
@@ -206,7 +207,8 @@ export const getUsers = async (req, res, next) => {
 
 export const getUser = async (req, res, next) => {
   try {
-    const user = await UserModel.findById(req.params.id);
+    const user = await UserModel.findById(req.params.id)
+    .select({password: false, verificationCode: false});
 
     if (!user) {
       return res.status(404).json({ message: "User cannot be found." });

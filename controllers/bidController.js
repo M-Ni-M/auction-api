@@ -1,11 +1,64 @@
-import  BidModel  from "../models/bids.js"; 
+import  BidModel  from "../models/bids.js";
+import mongoose from "mongoose"; 
 
+export const getBidsByAuction = async (req, res, next) => {
+    const auctionId = req.params.auctionId; // Get auctionId from the request parameters
+    
+    if (!auctionId) {
+        return res.status(400).json({ message: 'Auction ID is required.' });
+    }
+
+        // Validate auctionId
+        if (!mongoose.isValidObjectId(auctionId)) {
+            return res.status(400).json({ message: 'Invalid auction ID format.' });
+        }
+
+    try {
+        // Fetch all bids for the specified auctionId
+        const bids = await BidModel.find({ auctionId });
+
+        // Check if bids were found
+        if (bids.length === 0) {
+            return res.status(404).json({ message: 'No bids found for this auction.' });
+        }
+
+        // Respond with the retrieved bids
+        res.status(200).json({ bids: bids, totalBids: bids.length});
+    } catch (error) {
+        console.error('Error retrieving bids:', error);
+        res.status(500).json({ message: 'Error retrieving bids.', error: error.message });
+    }
+};
+
+export const getBidsByUser = async (req, res, next) => {
+    // Get userId from the request parameters
+    const userId = req.params.userId; 
+
+    if (!userId) {
+        return res.status(400).json({ message: 'User ID is required.' });
+    }
+
+    try {
+        // Fetch all bids made by the specified userId
+        const bids = await BidModel.find({ userId });
+
+        // Check if bids were found
+        if (bids.length === 0) {
+            return res.status(404).json({ message: 'No bids found for this user.' });
+        }
+
+        // Respond with the retrieved bids
+        res.status(200).json({bids: bids, totalBids: bids.length});
+    } catch (error) {
+        console.error('Error retrieving bids:', error);
+        res.status(500).json({ message: 'Error retrieving bids.', error: error.message });
+    }
+};
 
 export const createBid = async (req, res, next) => {
     const { bidAmount } = req.body;
 
     const auctionId = req.params.auctionId;
-    console.log(auctionId, "This is for the auction id");
 
     // Get userId
     const userId = req.auth.id;
@@ -17,7 +70,8 @@ export const createBid = async (req, res, next) => {
     try {
         const newBid = await BidModel.create({
             auctionId,
-            bidAmount 
+            bidAmount,
+            userId
         });
 
         // Respond with the created bid
@@ -31,7 +85,6 @@ export const createBid = async (req, res, next) => {
 export const deleteBid = async (req, res, next) => {
     // Get bidId from request parameters
     const bidId = req.params.id;
-    console.log(bidId, "This is the bid ID to delete");
 
     // Validate required fields
     if (!bidId) {
