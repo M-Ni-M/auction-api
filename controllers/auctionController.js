@@ -49,6 +49,24 @@ export const allAuctionItems = async (req, res, next) => {
   }
 };
 
+// Get all auctions by a user
+export const getAuctionItemsByUserId = async (req, res, next) => {
+  try {
+    // Fetch auction items for the specified user ID
+    const items = await AuctionModel.find({ userId: req.params.userId });
+
+    // Check if any items were found
+    if (!items || items.length === 0) {
+      return res.status(404).json({ message: "No auction items found for this user." });
+    }
+
+    // Return the found items
+    res.status(200).json({items, totalAuctions: items.length});
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Get a Single Item for Auction
 export const getAuctionItem = async (req, res, next) => {
   try {
@@ -87,6 +105,8 @@ export const updateItem = async (req, res, next) => {
     next(error);
   }
 };
+
+
 
 export const deleteItem = async (req, res, next) => {
   try {
