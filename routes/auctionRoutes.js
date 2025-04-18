@@ -5,6 +5,7 @@ import {
   allAuctionItems,
   deleteItem,
   getAuctionItem,
+  getAuctionItemsByUserId,
   updateItem,
 } from "../controllers/auctionController.js";
 import  authMiddleware  from "../middlewares/auth.js";
@@ -21,6 +22,8 @@ itemRouter.post(
 itemRouter.get("/all-items", allAuctionItems);
 
 itemRouter.get("/item/:id", getAuctionItem);
+
+itemRouter.get("/user-item/:userId", getAuctionItemsByUserId)
 
 itemRouter.patch(
   "/update-item/:id",

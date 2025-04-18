@@ -49,7 +49,7 @@ export const auctionOwner = async (req, res, next) => {
 };
 
 export const bidOwner = async (req, res, next) => {
-  const bidId = req.params.id; 
+  const bidId = req.params.bidId; 
 
   if (!Types.ObjectId.isValid(bidId)) {
       return res.status(400).json({

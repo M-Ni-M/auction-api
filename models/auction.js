@@ -19,6 +19,10 @@ const auctionSchema = new Schema(
       type: Number,
       required: true,
     },
+    currentBid: {
+      type: Number,
+      required: false
+    },
     endTime: {
       type: String,
       required: true,
