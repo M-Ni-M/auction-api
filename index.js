@@ -71,7 +71,7 @@ myApp.use("/api/v1", userRouter);
 myApp.use("/api/v1", bidRouter)
 
 // Initialize socket.io with the HTTP server
-const io = initSocketIO(httpServer);
+initSocketIO(httpServer);
 
 // Start the Server
 httpServer.listen(port, () => {

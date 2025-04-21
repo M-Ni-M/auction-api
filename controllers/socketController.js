@@ -7,9 +7,9 @@ export const setupEventHandlers = (io) => {
     try {
       console.log(`New Client connected: ${socket.id}`);
 
-      // send welcome message to newly connectd client
+      // send welcome message to newly connected client
       socket.emit("welcome", {
-        message: "Welcome to the Finalisima Server!",
+        message: "Welcome to the Finalixima Server!",
         socketId: socket.id,
       });
 
