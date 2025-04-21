@@ -1,5 +1,4 @@
 import { AuctionModel } from '../models/auction.js';
-
 import BidModel from '../models/bids.js';
 import { Types } from 'mongoose';
 

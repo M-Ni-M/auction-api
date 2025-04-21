@@ -31,7 +31,7 @@ const setupAuctionNamespace = (namespace) => {
 
     // Send Welcome message to client
     socket.emit("welcome", {
-      message: "Welcome to the auction namespace!",
+      message: "Welcome to the Auction namespace!",
       socketId: socket.id,
     });
 
