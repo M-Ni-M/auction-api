@@ -64,7 +64,6 @@ const port = process.env.PORT || 3333;
 
 //Create HTTP server using Express app
 const httpServer = createServer(myApp);
-myApp.set('trust proxy', true);
 
 // Routes
 myApp.use("/api/v1", itemRouter);
