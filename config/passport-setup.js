@@ -30,8 +30,10 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_KEY,
       callbackURL: `${process.env.BASE_URL}/api/v1/google/callback`,
       scope: ["profile", "email"],
+      proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log("Callback URL used:", "https://auction-api-6aps.onrender.com/api/v1/google/callback");
       try {
         if (!profile.emails?.length) {
           return done(new Error("No email found in Google Profile"));
