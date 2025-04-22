@@ -30,14 +30,13 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_KEY,
       callbackURL: "https://auction-api-6aps.onrender.com/api/v1/google/callback",
       scope: ["profile", "email"],
-      proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         if (!profile.emails?.length) {
           return done(new Error("No email found in Google Profile"));
         }
-        const { email } = profile.emails[0].value;
+        const  email  = profile.emails[0].value;
         const existingUser = await UserModel.findOne({
           $or: [{ googleId: profile.id }, { email: email }],
         });
