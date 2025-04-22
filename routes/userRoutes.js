@@ -33,7 +33,7 @@ userRouter.get(
 );
 
 userRouter.get(
-  "/api/v1/google/callback",
+  "google/callback",
   passport.authenticate("google", {
     session: false,
   }),
