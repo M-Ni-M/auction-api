@@ -146,7 +146,7 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = expirationDate;
     await user.save();
 
-    const resetLink = `https://auction-api-6aps.onrender.com/api/v1/reset-password/${token}`;
+    const resetLink = `http://localhost:5173/api/v1/reset-password/${token}`;
 
 
     await sendForgotPasswordEmail(email, resetLink);
