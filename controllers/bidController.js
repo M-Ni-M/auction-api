@@ -76,6 +76,10 @@ export const createBid = async (req, res, next) => {
             return res.status(404).json({ message: 'Auction not found.' });
         }
 
+        if (auction.status === 'closed'){
+            return res.status(404).json({message: 'This auction is closed'})
+        }
+
         // Check if the bid amount is higher than the current highest bid
         if (bidAmount <= auction.currentBid) {
             return res.status(400).json({ message: 'Bid amount must be higher than the current highest bid.', currentBid: auction.currentBid});
@@ -95,6 +99,7 @@ export const createBid = async (req, res, next) => {
 
         // Update the auction's current bid
         auction.currentBid = bidAmount;
+        auction.winningBidderId = userId;
         await auction.save();
 
         // Respond with the created bid
