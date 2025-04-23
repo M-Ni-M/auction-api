@@ -17,7 +17,7 @@ const auctionSchema = new Schema(
     },
     category: {
       type: String,
-      required: true,
+      enum: ['agricultural products', 'artisan crafts', 'electronics & gadgets', 'fashion & home decor'],
     },
     startingBid: {
       type: Number,
