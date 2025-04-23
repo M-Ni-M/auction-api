@@ -28,7 +28,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_KEY,
-      callbackURL: "https://auction-api-6aps.onrender.com/api/v1/google/callback",
+      callbackURL: "https://finalixima.netlify.app/api/v1/google/callback",
       scope: ["profile", "email"],
     },
     async (accessToken, refreshToken, profile, done) => {
