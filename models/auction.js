@@ -8,10 +8,14 @@ const auctionSchema = new Schema(
       required: true,
     },
     image: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     description: {
+      type: String,
+      required: true,
+    },
+    category: {
       type: String,
       required: true,
     },
@@ -21,15 +25,24 @@ const auctionSchema = new Schema(
     },
     currentBid: {
       type: Number,
-      required: false
+      default: null,
     },
     endTime: {
-      type: String,
+      type: Date,
       required: true,
     },
     userId: {
       type: Types.ObjectId,
       ref: "User",
+    },
+    winningBidderId: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
+    status: {
+      type: String,
+      enum: ['active', 'closed'],
+      default: 'active',
     },
   },
   {

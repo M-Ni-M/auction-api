@@ -3,6 +3,7 @@ import { auctionItemImage } from "../middlewares/upload.js";
 import {
   addItemToAuction,
   allAuctionItems,
+  completeAuction,
   deleteItem,
   getAuctionItem,
   getAuctionItemsByUserId,
@@ -30,6 +31,8 @@ itemRouter.patch(
   auctionItemImage.single("image"), authMiddleware, auctionOwner,
   updateItem
 );
+
+itemRouter.post("/complete-auction/:auctionId", authMiddleware, auctionOwner,completeAuction)
 
 itemRouter.delete("/delete-item/:id", authMiddleware, auctionOwner, deleteItem);
 

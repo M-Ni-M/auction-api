@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 
 
 export const auctionOwner = async (req, res, next) => {
-  const auctionId = req.params.id;
+  const { auctionId } = req.params;
 
   if (!Types.ObjectId.isValid(auctionId)) {
     return res.status(400).json({

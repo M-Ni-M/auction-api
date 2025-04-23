@@ -1,4 +1,5 @@
 import { AuctionModel } from "../models/auction.js";
+import { sendAuctioneerNotificationEmail, sendWinningEmail } from "../utils/mailer.js";
 import { auctionItemValidator } from "../validators/auctionValidators.js";
 
 //Add an item for auctioning
@@ -106,7 +107,45 @@ export const updateItem = async (req, res, next) => {
   }
 };
 
+export const completeAuction = async (req, res, next) => {
+  const { auctionId } = req.params;
 
+  const auction = await AuctionModel.findById(auctionId)
+      .populate({
+          path: 'winningBidderId',
+          select: 'email username' // Only select the email and username
+      })
+      .populate({
+          path: 'userId',
+          select: 'email username'
+      });
+
+  if (!auction) {
+      return res.status(404).json({ message: 'Auction not found' });
+  }
+
+  // Check if the auction is already closed
+  if (auction.status === 'closed') {
+      return res.status(400).json({ message: 'Auction is already closed' });
+  }
+
+  // Set the auction status to closed
+  auction.status = 'closed';
+  await auction.save();
+
+  // Access the winning bidder and seller from the populated fields
+  const winningBidder = auction.winningBidderId; 
+  const seller = auction.userId; 
+  if (!winningBidder || !seller) {
+      return res.status(500).json({ message: 'User information is missing' });
+  }
+
+  // Send notifications to both parties
+  await sendWinningEmail(winningBidder, auction, seller);
+  await sendAuctioneerNotificationEmail(winningBidder, auction, seller)
+
+  res.status(200).json({ message: 'Auction completed successfully.', auction });
+};
 
 export const deleteItem = async (req, res, next) => {
   try {
