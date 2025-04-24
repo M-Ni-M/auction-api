@@ -48,6 +48,18 @@ const setupAuctionNamespace = (namespace) => {
       });
     });
 
+      // Handle auction started event
+      socket.on("auctionStarted", (auctionData) => {
+        console.log(`Auction started: ${auctionData.auctionId}`);
+        
+        // Broadcast to all connected clients that an auction has started
+        namespace.emit("auctionStarted", auctionData);
+        
+        // Create a room for this auction
+        const roomName = `auction:${auctionData.auctionId}`;
+        socket.join(roomName);
+      });
+
     // Handle placing bids
     socket.on("placeBid", ({ auctionId, amount }) => {
       const roomName = `auction:${auctionId}`;
