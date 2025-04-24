@@ -16,6 +16,8 @@ const TimeSchema = new Schema({
       max: 59, 
   },
 });
+
+
 const auctionSchema = new Schema(
   {
     title: {

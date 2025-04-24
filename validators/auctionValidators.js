@@ -9,6 +9,5 @@ export const auctionItemValidator = new Joi.object({
     startTime: Joi.object().required(),
     startingBid: Joi.number().required(),
     endTime: Joi.date().required(),
-    auctionDuration: Joi.object().required(),
-   
+    auctionDuration: Joi.object().required(), 
 })
