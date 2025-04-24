@@ -13,14 +13,14 @@ const bidSchema = new Schema(
       required: true,
       ref: "User",
     },
+    bidTime: {
+      type: Date,
+      default: Date.now,
+    },
     bidAmount: {
       type: Number,
       required: true,
       min: 0,
-    },
-    bidTime: {
-      type: Date,
-      default: Date.now,
     },
     isWinning: {
       type: Boolean,
@@ -28,7 +28,7 @@ const bidSchema = new Schema(
     },
     bidStatus: {
       type: String,
-      enum: ["active", "withdrawn", "canceled"],
+      enum: ["active", "withdrawn"],
       default: "active",
     },
     paymentStatus: {

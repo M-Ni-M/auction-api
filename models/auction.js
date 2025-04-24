@@ -20,11 +20,11 @@ const auctionSchema = new Schema(
       enum: ['agricultural products', 'artisan crafts', 'electronics & gadgets', 'fashion & home decor'],
     },
     startingBid: {
-      type: Date,
+      type: Number,
       required: true,
     },
     currentBid: {
-      type: Date,
+      type: Number,
       default: null,
     },
     endTime: {
