@@ -1,23 +1,6 @@
 import { Schema, model, Types } from "mongoose";
 import normalize from "normalize-mongoose";
 
-
-const TimeSchema = new Schema({
-  hours: {
-      type: Number,
-      required: true,
-      min: 0,
-      max: 23,
-  },
-  minutes: {
-      type: Number,
-      required: true,
-      min: 0,
-      max: 59, 
-  },
-});
-
-
 const auctionSchema = new Schema(
   {
     title: {
@@ -37,11 +20,11 @@ const auctionSchema = new Schema(
       enum: ['agricultural products', 'artisan crafts', 'electronics & gadgets', 'fashion & home decor'],
     },
     startingBid: {
-      type: Number,
+      type: Date,
       required: true,
     },
     currentBid: {
-      type: Number,
+      type: Date,
       default: null,
     },
     endTime: {
@@ -53,11 +36,11 @@ const auctionSchema = new Schema(
       ref: "User",
     },
     auctionDuration: {
-      type: TimeSchema,
+      type: Date,
       required: true,
   },
   startTime: {
-    type: TimeSchema,
+    type: Date,
     required: true,
 },
     winningBidderId: {
