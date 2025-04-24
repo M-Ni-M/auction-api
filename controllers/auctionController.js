@@ -126,7 +126,7 @@ export const completeAuction = async (req, res, next) => {
 
   // Check if the auction is already closed
   if (auction.status === 'closed') {
-      return res.status(400).json({ message: 'Auction is already closed' });
+      return res.status(400).json({ message: 'Auction already closed' });
   }
 
   // Set the auction status to closed
