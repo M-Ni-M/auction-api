@@ -27,10 +27,6 @@ const auctionSchema = new Schema(
       type: Number,
       default: null,
     },
-    startTime: {
-      type: Date,
-      required : true
-    },
     endTime: {
       type: Date,
       required: true,
