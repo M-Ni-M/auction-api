@@ -28,7 +28,7 @@ const bidSchema = new Schema(
     },
     bidStatus: {
       type: String,
-      enum: ["active", "withdrawn", "canceled"],
+      enum: ["active", "withdrawn"],
       default: "active",
     },
     paymentStatus: {
