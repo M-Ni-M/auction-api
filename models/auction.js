@@ -35,10 +35,6 @@ const auctionSchema = new Schema(
       type: Types.ObjectId,
       ref: "User",
     },
-    auctionDuration: {
-      type: Date,
-      required: true,
-  },
   startTime: {
     type: Date,
     required: true,
