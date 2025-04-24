@@ -8,7 +8,6 @@ export const auctionItemValidator = new Joi.object({
     category: Joi.string().required().valid('agricultural products', 'artisan crafts', 'electronics & gadgets', 'fashion & home decor'),
     startingBid: Joi.number().required(),
     endTime: Joi.date().required(),
-    duration: Joi.date().required(),
     auctionDuration: Joi.object().required(),
     startTime: Joi.object().required()
 })
