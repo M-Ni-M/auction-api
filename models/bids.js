@@ -13,14 +13,14 @@ const bidSchema = new Schema(
       required: true,
       ref: "User",
     },
+    bidTime: {
+      type: Date,
+      default: Date.now,
+    },
     bidAmount: {
       type: Number,
       required: true,
       min: 0,
-    },
-    bidTime: {
-      type: Date,
-      default: Date.now,
     },
     isWinning: {
       type: Boolean,
