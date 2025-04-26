@@ -30,7 +30,7 @@ const auctionSchema = new Schema(
     },
     endTime: {
       type: Date,
-      required: true,
+      required: false,
     },
     // startTime: {
     //   type: Date,
