@@ -7,6 +7,7 @@ import {
   deleteItem,
   getAuctionItem,
   getAuctionItemsByUserId,
+  startAuction,
   updateItem,
 } from "../controllers/auctionController.js";
 import  authMiddleware  from "../middlewares/auth.js";
@@ -35,6 +36,7 @@ itemRouter.patch(
 itemRouter.post("/complete-auction/:auctionId", authMiddleware, auctionOwner,completeAuction)
 
 itemRouter.delete("/delete-item/:id", authMiddleware, auctionOwner, deleteItem);
+itemRouter.post("/start-auction/:auctionId", authMiddleware, auctionOwner, startAuction)
 
 
 export default itemRouter;
