@@ -36,10 +36,10 @@ const auctionSchema = new Schema(
     //   type: Date,
     //   required: true,
     // },
-    duration: {
-      type: Date,
-      required: true,
-    },
+    // duration: {
+    //   type: Date,
+    //   required: true,
+    // },
     currentBid: {
       type: Number,
       default: null,
