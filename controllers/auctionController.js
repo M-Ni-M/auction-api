@@ -146,6 +146,17 @@ export const completeAuction = async (req, res, next) => {
 
   res.status(200).json({ message: 'Auction completed successfully.', auction });
 };
+export const startAuction = async (req, res, next) => {
+  try {
+    await AuctionModel.findByIdAndUpdate(req.params.auctionId, {
+      status: "active", 
+      endTime: new Date(Date.now()+ 300000)
+    })
+    res.status(200).json({message: "Auction started"})
+  } catch (error) {
+    next(error)
+  }
+}
 
 export const deleteItem = async (req, res, next) => {
   try {
