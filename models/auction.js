@@ -17,36 +17,46 @@ const auctionSchema = new Schema(
     },
     category: {
       type: String,
-      enum: ['agricultural products', 'artisan crafts', 'electronics & gadgets', 'fashion & home decor'],
+      enum: [
+        "agricultural products",
+        "artisan crafts",
+        "electronics & gadgets",
+        "fashion & home decor",
+      ],
     },
     startingBid: {
       type: Number,
+      required: true,
+    },
+    // endTime: {
+    //   type: Date,
+    //   required: true,
+    // },
+    // startTime: {
+    //   type: Date,
+    //   required: true,
+    // },
+    duration: {
+      type: Date,
       required: true,
     },
     currentBid: {
       type: Number,
       default: null,
     },
-    endTime: {
-      type: Date,
-      required: true,
-    },
     userId: {
       type: Types.ObjectId,
       ref: "User",
     },
-  startTime: {
-    type: Date,
-    required: true,
-},
+
     winningBidderId: {
       type: Types.ObjectId,
       ref: "User",
     },
     status: {
       type: String,
-      enum: ['upcoming','active', 'closed'],
-      default: 'upcoming',
+      enum: ["upcoming", "active", "closed"],
+      default: "upcoming",
     },
   },
   {
@@ -56,4 +66,4 @@ const auctionSchema = new Schema(
 
 auctionSchema.plugin(normalize);
 
-export const AuctionModel = model('Auction', auctionSchema);
+export const AuctionModel = model("Auction", auctionSchema);
